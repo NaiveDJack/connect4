@@ -23,6 +23,13 @@ class Grid
   end
 
   # prints the tokens in correct order with the ascii
-  def show_grid 
+  def show_grid
+    for i in 6..0 do
+      @tokens.each_value { |column| print(column[:"c#{i}"], ┃ ) }
+    end
+    # X = 6 until X = 0
+    # for each value in @tokens
+    # print r#{X}
+    # X -= 1
   end
 end
