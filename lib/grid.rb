@@ -16,6 +16,7 @@ class Grid
     }
   end
 
+  # value will be externally restricted to 1, 2 or colored things
   def add_token(column, value)
     return if @tokens[:"c#{column}"][@tokens[:"c#{column}"].key(0)].nil?
 
@@ -24,12 +25,13 @@ class Grid
 
   # prints the tokens in correct order with the ascii
   def show_grid
-    for i in 6..0 do
-      @tokens.each_value { |column| print(column[:"c#{i}"], ┃ ) }
+    puts('┌───┬───┬───┬───┬───┬───┬───┐')
+    6.downto(1) do |row|
+      print( '│ ')
+      @tokens.each_value do |column|
+        print(column[:"r#{row}"], ' │ ')
+      end
+      row == 1 ? puts(' ', '└───┴───┴───┴───┴───┴───┴───┘') : puts(' ', '├───┼───┼───┼───┼───┼───┼───┤')
     end
-    # X = 6 until X = 0
-    # for each value in @tokens
-    # print r#{X}
-    # X -= 1
   end
 end
