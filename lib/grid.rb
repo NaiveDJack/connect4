@@ -27,7 +27,7 @@ class Grid
   def show_grid
     puts('┌───┬───┬───┬───┬───┬───┬───┐')
     6.downto(1) do |row|
-      print( '│ ')
+      print('│ ')
       @tokens.each_value do |column|
         print(column[:"r#{row}"], ' │ ')
       end
