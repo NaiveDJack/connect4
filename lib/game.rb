@@ -8,7 +8,7 @@ class Game
   attr_reader :state, :p1, :p2, :grid, :turn
 
   def initialize
-    @state = 'running'
+    @state = 'on'
   end
 
   # game setup functions
@@ -44,11 +44,11 @@ class Game
     turn[:counter] += 1
   end
 
-  def play_turn
+  def player_input
     puts('Select the column where you want to put the token.')
-    # take and validate the input = new function?
-    selected_column = gets.chomp
-    @grid.add_token(selected_column, @turn[:player].token)
+    @grid.add_token(gets.chomp, @turn[:player].token)
   end
+
+
   # game state checkers
 end

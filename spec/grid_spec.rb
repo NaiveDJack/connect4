@@ -12,10 +12,24 @@ describe Grid do
         expect(grid.tokens[:c1][:r1]).to eq(1)
         expect(grid.tokens[:c2][:r1]).to eq(0)
       end
+    end
+  end
 
-      it 'returns nil when column is full' do
-        6.times { grid.add_token(1, 1) }
-        expect(grid.add_token(1, 1)).to be_nil
+  describe '#validate_input' do
+    context 'when input is not 1..7' do
+      it 'returns false' do
+        expect(grid.validate_input('a')).to eq(false)
+      end
+    end
+    context 'when input is valid but column is full' do
+      it 'returns false' do
+        6.times { grid.add_token(3, 1) }
+        expect(grid.validate_input(3)).to eq(false)
+      end
+    end
+    context 'when input is valid' do
+      it 'returns true' do
+        expect(grid.validate_input(5)).to eq(true)
       end
     end
   end

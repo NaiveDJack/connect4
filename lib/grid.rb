@@ -18,9 +18,30 @@ class Grid
 
   # value will be externally restricted to 1, 2 or colored things
   def add_token(column, value)
-    return if @tokens[:"c#{column}"][@tokens[:"c#{column}"].key(0)].nil?
+    add_token(gets.chomp, value) unless validate_input(column)
 
     @tokens[:"c#{column}"][@tokens[:"c#{column}"].key(0)] = value
+  end
+
+  def validate_input(column)
+    unless (1..7).include?(column)
+      puts 'Invalid input, enter a number between 1 and 7'
+      return false
+    end
+
+    unless @tokens[:"c#{column}"][:r6].zero?
+      print 'column is full, available columns are'
+      check_columns
+      return false
+    end
+
+    true
+  end
+
+  def check_columns
+    @tokens.each_value.with_index(1) do |column, index|
+      print " #{index}" if column[:r6].zero?
+    end
   end
 
   # prints the tokens in correct order with the ascii
