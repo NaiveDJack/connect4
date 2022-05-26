@@ -44,7 +44,37 @@ class Grid
     end
   end
 
-  # prints the tokens in correct order with the ascii
+  # checking grid state game wise
+
+  def win?
+    vertical_line? || horizontal_line? || diagonal_line? ? true : false
+  end
+
+  def full?(grid = @tokens)
+    grid.none? { |_column, row| row[:r6].zero? }
+  end
+
+  def same_four?(quad)
+    return false if quad.include?(0)
+    return true if quad.uniq.length == 1
+
+    false
+  end
+
+  def vertical_line?(grid = @tokens)
+    grid.each_value do |column|
+      v_line = column.values
+      v_fours = [v_line.slice(0, 4), v_line.slice(1, 4), v_line.slice(2, 4)]
+      return true if v_fours.any? { |quad| true if same_four?(quad) }
+    end
+    false
+  end
+
+  def horizontal_line?(grid = @tokens)
+      # extract every Nth member of column into line N
+  end
+
+  # visualization method
   def show_grid
     puts('┌───┬───┬───┬───┬───┬───┬───┐')
     6.downto(1) do |row|

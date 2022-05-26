@@ -34,9 +34,115 @@ describe Grid do
     end
   end
 
-  describe '#show_grid' do
-    it 'shows the grid' do
-      grid.show_grid
+  describe '#win?' do
+    context 'when a winning line is in grid' do
+      it 'gives victory to the active player'
+      it 'changes @state to off'
+      it 'returns true'
     end
   end
+
+  describe '#same_four?' do
+    context 'when prompted a quad with zeroes' do
+      it 'returns false' do
+        expect(grid.same_four?([0, 0, 0, 0])).to eq(false)
+      end
+    end
+
+    context 'when prompted a line with no zeroes' do
+      it 'returns true on a full line' do
+        expect(grid.same_four?(['◉', '◉', '◉', '◉'])).to eq(true)
+      end
+
+      it 'returns false on an incomplete line' do
+        expect(grid.same_four?(['◉', '◎', '◉', '◉'])).to eq(false)
+      end
+    end
+  end
+
+  # mock grids for testing line checkers
+
+  let(:vert_mock)
+    {
+      c1: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
+      c2: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
+      c3: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
+      c4: { r1: '◎', r2: '◎', r3: '◎', r4: '◎', r5: 0, r6: 0 },
+      c5: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
+      c6: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
+      c7: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 }
+    }
+
+  let(:hori_mock)
+    {
+      c1: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
+      c2: { r1: '◎', r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
+      c3: { r1: '◎', r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
+      c4: { r1: '◎', r2: 0, r3: '◎', r4: '◎', r5: 0, r6: 0 },
+      c5: { r1: '◎', r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
+      c6: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
+      c7: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 }
+    }
+
+  let(:diag_mock)
+    {
+      c1: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
+      c2: { r1: '◎', r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
+      c3: { r1: '◎', r2: '◎', r3: 0, r4: 0, r5: 0, r6: 0 },
+      c4: { r1: 0, r2: 0, r3: '◎', r4: 0, r5: 0, r6: 0 },
+      c5: { r1: '◎', r2: 0, r3: 0, r4: '◎', r5: 0, r6: 0 },
+      c6: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
+      c7: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 }
+    }
+
+  describe '#vertical_line?' do
+    context 'when there is a vertical line' do
+      it 'returns true' do
+        expect(grid.vertical_line?(vert_mock)).to eq(true)
+      end
+    end
+
+    context 'when there is a horizontal line' do
+      it 'returns false' do
+        expect(grid.vertical_line?(hori_mock)).to eq(false)
+      end
+    end
+  end
+
+  describe '#horizontal_line?' do
+    context 'when there is an horizontal line' do
+      it 'returns true' do
+        expect(grid.horizontal_line?(hori_mock)).to eq(true)
+      end
+    end
+
+    context 'when there is a vertical line' do
+      it 'returns false' do
+        expect(grid.horizontal_line?(vert_mock)).to eq(false)
+      end
+    end
+  end
+
+  describe '#full?' do
+    context "when grid's columns are all filled" do
+      it 'returns true' do
+        grid.tokens.each.with_index(1) do |_column, index|
+          6.times { grid.add_token(index, 1) }
+        end
+        expect(grid.full?).to eq(true)
+      end
+    end
+
+    context 'when grid is not completely filled' do
+      it 'returns false' do
+        expect(grid.full?).to eq(false)
+      end
+    end
+  end
+  
+    describe '#show_grid' do
+      it 'shows the grid' do
+        grid.show_grid
+      end
+    end
 end

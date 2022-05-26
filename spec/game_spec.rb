@@ -72,31 +72,14 @@ describe Game do
     end
   end
 
-  describe '#player_input' do
-    context 'when game is on' do
-      it 'defines selected_column' do
-        game.player_input
-        expect(selected_column).not_to be_nil
-      end
-
-      it 'calls Grid.add_token'
-      it 'calls Grid.add_token again if column is full'
-    end
-  end
-
-  describe '#check_state' do
-    context 'when game is won' do
-      it 'gives victory to the active player'
-      it 'sets the game to off'
-    end
-
-    context 'when grid is full' do
-      it 'sets game to off'
+  describe '#state_check' do
+    context 'when a win or tie is detected' do
+      it 'changes @state to off'
     end
   end
   # outputs error if add token == nil
   # check game state
   # correctly identifies win state
   # correctly identifies tie state (all columns are full)
-  # else game == on 
+  # else game == on
 end

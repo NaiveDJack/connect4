@@ -34,14 +34,17 @@ class Game
   end
 
   # game flow functions
-  def turn_assign(turn = @turn, p1 = @p1, p2 = @p2)
-    turn[:player] = turn[:counter].odd? ? p1.name : p2.name
+  def turn_play(turn = @turn)
+    turn_assign(turn, @p1, @p2)
+    player_input
+    @grid.show_grid
+    state_check
+    turn[:counter] += 1
   end
 
-  def turn_play(turn = @turn)
+  def turn_assign(turn = @turn, p1 = @p1, p2 = @p2)
+    turn[:player] = turn[:counter].odd? ? p1.name : p2.name
     puts("it's #{turn[:player]}'s turn.")
-    # play_turn
-    turn[:counter] += 1
   end
 
   def player_input
@@ -49,6 +52,14 @@ class Game
     @grid.add_token(gets.chomp, @turn[:player].token)
   end
 
-
   # game state checkers
+  def state_check
+    @state = 'off' if @grid.full?
+    declare_winner(@turn[:player]) if @grid.win?
+    # check for winning lines is_win?
+    # if found, declares turn[:player] as winner and @state = 'off'
+    # check for full grid is_tie?
+    # declares tie and @state = 'off'
+    # else proceeds
+  end
 end
