@@ -61,17 +61,31 @@ class Grid
     false
   end
 
+  def line_slicer(line)
+    fours = []
+    (0..line.length - 4).each { |starter| fours += [line.slice(starter, 4)] }
+    fours
+  end
+
   def vertical_line?(grid = @tokens)
     grid.each_value do |column|
       v_line = column.values
-      v_fours = [v_line.slice(0, 4), v_line.slice(1, 4), v_line.slice(2, 4)]
+      v_fours = line_slicer(v_line)
       return true if v_fours.any? { |quad| true if same_four?(quad) }
     end
     false
   end
 
   def horizontal_line?(grid = @tokens)
-      # extract every Nth member of column into line N
+    (0..5).each do |row|
+      h_line = []
+      grid.each_value do |column|
+        h_line << column.values[row]
+      end
+      h_fours = line_slicer(h_line)
+      return true if h_fours.any? { |quad| true if same_four?(quad) }
+    end
+    false
   end
 
   # visualization method

@@ -60,40 +60,57 @@ describe Grid do
     end
   end
 
+  describe '#line_slicer' do
+    context 'when fed an array length 6' do
+      it 'returns three arrays of length 4' do
+        expect(grid.line_slicer([0, 0, 0, 0, 0, 0]).length).to eq(3)
+      end
+    end
+
+    context 'when fed an array length 7' do
+      it 'returns four arrays of length 4' do
+        expect(grid.line_slicer([0, 0, 0, 0, 0, 0, 0]).length).to eq(4)
+      end
+    end
+
+    context 'when fed an array length 3' do
+      it 'returns no arrays' do
+        expect(grid.line_slicer([0, 0, 0]).length).to eq(0)
+      end
+    end
+  end
+
   # mock grids for testing line checkers
 
-  let(:vert_mock)
-    {
-      c1: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
+  let(:vert_mock) do
+    { c1: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
       c2: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
       c3: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
       c4: { r1: '◎', r2: '◎', r3: '◎', r4: '◎', r5: 0, r6: 0 },
       c5: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
       c6: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
-      c7: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 }
-    }
+      c7: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 } }
+  end
 
-  let(:hori_mock)
-    {
-      c1: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
+  let(:hori_mock) do
+    { c1: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
       c2: { r1: '◎', r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
       c3: { r1: '◎', r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
       c4: { r1: '◎', r2: 0, r3: '◎', r4: '◎', r5: 0, r6: 0 },
       c5: { r1: '◎', r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
       c6: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
-      c7: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 }
-    }
+      c7: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 } }
+  end
 
-  let(:diag_mock)
-    {
-      c1: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
+  let(:diag_mock) do
+    { c1: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
       c2: { r1: '◎', r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
       c3: { r1: '◎', r2: '◎', r3: 0, r4: 0, r5: 0, r6: 0 },
       c4: { r1: 0, r2: 0, r3: '◎', r4: 0, r5: 0, r6: 0 },
       c5: { r1: '◎', r2: 0, r3: 0, r4: '◎', r5: 0, r6: 0 },
       c6: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 },
-      c7: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 }
-    }
+      c7: { r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0 } }
+  end
 
   describe '#vertical_line?' do
     context 'when there is a vertical line' do
@@ -105,6 +122,12 @@ describe Grid do
     context 'when there is a horizontal line' do
       it 'returns false' do
         expect(grid.vertical_line?(hori_mock)).to eq(false)
+      end
+    end
+
+    context 'when the grid is empty' do
+      it 'returns false' do
+        expect(grid.vertical_line?(grid.tokens)).to eq(false)
       end
     end
   end
@@ -119,6 +142,18 @@ describe Grid do
     context 'when there is a vertical line' do
       it 'returns false' do
         expect(grid.horizontal_line?(vert_mock)).to eq(false)
+      end
+    end
+
+    context 'when there is a diagonal line' do
+      it 'returns false' do
+        expect(grid.horizontal_line?(diag_mock)).to eq(false)
+      end
+    end
+
+    context 'when the grid is empty' do
+      it 'returns false' do
+        expect(grid.vertical_line?(grid.tokens)).to eq(false)
       end
     end
   end
@@ -139,10 +174,12 @@ describe Grid do
       end
     end
   end
-  
-    describe '#show_grid' do
+
+  describe '#show_grid' do
+    context 'anytime' do
       it 'shows the grid' do
         grid.show_grid
       end
     end
+  end
 end
