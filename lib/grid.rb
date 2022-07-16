@@ -46,8 +46,8 @@ class Grid
 
   # checking grid state game wise
 
-  def win?
-    vertical_line? || horizontal_line? || diagonal_line? ? true : false
+  def win?(grid = @tokens)
+    [vertical_line?(grid), horizontal_line?(grid), diagonal_line?(grid)].any? ? true : false
   end
 
   def full?(grid = @tokens)
@@ -79,13 +79,37 @@ class Grid
   def horizontal_line?(grid = @tokens)
     (0..5).each do |row|
       h_line = []
-      grid.each_value do |column|
-        h_line << column.values[row]
-      end
+      grid.each_value { |column| h_line << column.values[row] }
       h_fours = line_slicer(h_line)
       return true if h_fours.any? { |quad| true if same_four?(quad) }
     end
     false
+  end
+
+  def diagonal_line?(grid = @tokens)
+    (1..4).each { |column| (1..3).each { |row| return true if rw_diag_line?(grid, column, row) } }
+    (4..7).each { |column| (1..3).each { |row| return true if lw_diag_line?(grid, column, row) } }
+    false
+  end
+
+  def rw_diag_line?(grid, column, row)
+    diag_quad = [
+      grid[:"c#{column}"][:"r#{row}"],
+      grid[:"c#{column + 1}"][:"r#{row + 1}"],
+      grid[:"c#{column + 2}"][:"r#{row + 2}"],
+      grid[:"c#{column + 3}"][:"r#{row + 3}"]
+    ]
+    same_four?(diag_quad) ? true : false
+  end
+
+  def lw_diag_line?(grid, column, row)
+    diag_quad = [
+      grid[:"c#{column}"][:"r#{row}"],
+      grid[:"c#{column - 1}"][:"r#{row + 1}"],
+      grid[:"c#{column - 2}"][:"r#{row + 2}"],
+      grid[:"c#{column - 3}"][:"r#{row + 3}"]
+    ]
+    same_four?(diag_quad) ? true : false
   end
 
   # visualization method

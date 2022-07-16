@@ -54,12 +54,10 @@ class Game
 
   # game state checkers
   def state_check
+    # if grid is full declares tie and @state = 'off'
     @state = 'off' if @grid.full?
-    declare_winner(@turn[:player]) if @grid.win?
-    # check for winning lines is_win?
     # if found, declares turn[:player] as winner and @state = 'off'
-    # check for full grid is_tie?
-    # declares tie and @state = 'off'
+    declare_winner(@turn[:player]) if win?(@grid)
     # else proceeds
   end
 end

@@ -34,14 +34,6 @@ describe Grid do
     end
   end
 
-  describe '#win?' do
-    context 'when a winning line is in grid' do
-      it 'gives victory to the active player'
-      it 'changes @state to off'
-      it 'returns true'
-    end
-  end
-
   describe '#same_four?' do
     context 'when prompted a quad with zeroes' do
       it 'returns false' do
@@ -153,7 +145,33 @@ describe Grid do
 
     context 'when the grid is empty' do
       it 'returns false' do
-        expect(grid.vertical_line?(grid.tokens)).to eq(false)
+        expect(grid.horizontal_line?(grid.tokens)).to eq(false)
+      end
+    end
+  end
+
+  describe '#diagonal_line?' do
+    context 'when there is an horizontal line' do
+      it 'returns false' do
+        expect(grid.diagonal_line?(hori_mock)).to eq(false)
+      end
+    end
+
+    context 'when there is a vertical line' do
+      it 'returns false' do
+        expect(grid.diagonal_line?(vert_mock)).to eq(false)
+      end
+    end
+
+    context 'when there is a diagonal line' do
+      it 'returns true' do
+        expect(grid.diagonal_line?(diag_mock)).to eq(true)
+      end
+    end
+
+    context 'when the grid is empty' do
+      it 'returns false' do
+        expect(grid.diagonal_line?(grid.tokens)).to eq(false)
       end
     end
   end
@@ -171,6 +189,14 @@ describe Grid do
     context 'when grid is not completely filled' do
       it 'returns false' do
         expect(grid.full?).to eq(false)
+      end
+    end
+  end
+
+  describe '#win?' do
+    context 'when a winning line is in grid' do
+      it 'returns true' do
+        expect(grid.win?(hori_mock)).to eq(true)
       end
     end
   end
