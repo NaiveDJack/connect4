@@ -34,12 +34,20 @@ class Game
   end
 
   # game flow functions
+
+  # main game flow
+  def game_play
+    turn_play until @state == 'on'
+    declare_winner if @state == 'won'
+    declare_tie if @state == 'tie'
+  end
+
+  # single turn flow
   def turn_play(turn = @turn)
     turn_assign(turn, @p1, @p2)
     player_input
     @grid.show_grid
     state_check
-    turn[:counter] += 1
   end
 
   def turn_assign(turn = @turn, p1 = @p1, p2 = @p2)
@@ -53,11 +61,13 @@ class Game
   end
 
   # game state checkers
-  def state_check
-    # if grid is full declares tie and @state = 'off'
-    @state = 'off' if @grid.full?
-    # if found, declares turn[:player] as winner and @state = 'off'
-    declare_winner(@turn[:player]) if win?(@grid)
-    # else proceeds
+  def state_check(grid = @grid, turn = @turn)
+    if grid.full?
+      @state = 'tie'
+    elsif grid.win?
+      @state = 'won'
+    else
+      turn[:counter] += 1
+    end
   end
 end

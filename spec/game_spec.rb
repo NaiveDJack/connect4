@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../lib/game'
+require_relative '../lib/grid'
 
 describe Game do
   subject(:game) { described_class.new }
@@ -14,7 +15,7 @@ describe Game do
     end
   end
 
-  # setup functions testing 
+  # setup functions testing
 
   # requests player 1 and player 2 names
   describe '#player_setup' do
@@ -60,21 +61,33 @@ describe Game do
     end
   end
 
-  # calls grid.add_token based on turn[player]
-  # updates turn[number] by 1
-  describe '#turn_play' do
-    context 'when a turn starts' do
-      let(:mock_turn) { { player: 'dan', counter: 1 } }
+  describe '#state_check' do
+    let(:grid) { double('grid') }
 
-      it 'updates the turn counter by one' do
-        expect { game.turn_play(mock_turn) }.to change { mock_turn[:counter] }.from(1).to(2)
+    context 'when a win is detected' do
+      before do
+        allow(game.state_check).to receive(grid.win?).and_return(true)
+      end
+
+      it 'changes @state to won' do
+        expect(game.state_check).to change(game.state).from('on').to('won')
+        game.state_check
       end
     end
-  end
-
-  describe '#state_check' do
-    context 'when a win or tie is detected' do
-      it 'changes @state to off'
+    context 'when the grid is full' do
+      it 'changes @state to tie' do
+        allow(game.state_check).to_receive(grid.full?).and_return(true)
+        expect(game.state_check).to change(game.state).from('on').to('tie')
+      end
+    end
+    context 'when no win is detected and grid is not full' do
+      it 'adds 1 to turn counter and @state remains on' do
+        allow(game.state_check).to_receive(grid.win?).and_return(false)
+        allow(game.state_check).to_receive(grid.full?).and_return(false)
+        expect(game.state_check).to change(mock_turn[:counter]).by(1)
+        expect(game.state).to be('on')
+        game.state_check
+      end
     end
   end
   # outputs error if add token == nil
