@@ -62,15 +62,15 @@ describe Game do
   end
 
   describe '#state_check' do
-    let(:grid) { double('grid') }
+    let(:grid) { instance_double(Grid) }
 
     context 'when a win is detected' do
       before do
-        allow(game.state_check).to receive(grid.win?).and_return(true)
+        allow(game.state_check(grid)).to receive(grid.win?).and_return(true)
       end
 
       it 'changes @state to won' do
-        expect(game.state_check).to change(game.state).from('on').to('won')
+        expect(game.state_check(grid)).to change(game.state).from('on').to('won')
         game.state_check
       end
     end
