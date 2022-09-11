@@ -63,6 +63,7 @@ describe Game do
 
   describe '#state_check' do
     let(:grid) { instance_double(Grid) }
+    let(:mock_turn) { { player: 'none', counter: 2 } }
 
     context 'when a win is detected' do
       before do
@@ -89,19 +90,14 @@ describe Game do
     context 'when no win is detected and grid is not full' do
       before do
         allow(grid).to receive(:full?).and_return(false)
-        allow(grid).to receive(:win?).and_return(true)
+        allow(grid).to receive(:win?).and_return(false)
       end
 
       it 'adds 1 to turn counter and @state remains on' do
-        expect { game.state_check(grid) }.to change{ game.turn[:counter] }.by(1)
+        expect { game.state_check(grid, mock_turn) }.to change { mock_turn[:counter] }.by(1)
         expect(game.state).to be('on')
-        game.state_check(grid)
+        game.state_check(grid, mock_turn)
       end
     end
   end
-  # outputs error if add token == nil
-  # check game state
-  # correctly identifies win state
-  # correctly identifies tie state (all columns are full)
-  # else game == on
 end

@@ -1,5 +1,6 @@
 require_relative 'connect4/version'
-require_relative 'grid'
+require_relative 'game'
 
-grid = Grid.new
-grid.show_grid
+game = Game.new
+game.game_setup
+game.game_play
