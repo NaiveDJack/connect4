@@ -69,25 +69,33 @@ describe Game do
         allow(grid).to receive(:full?).and_return(false)
         allow(grid).to receive(:win?).and_return(true)
       end
-        
+
       it 'changes @state to won' do
-        expect{game.state_check(grid)}.to change{ game.state }.from('on').to('won')
-        game.state_check
+        expect { game.state_check(grid) }.to change(game, :state).from('on').to('won')
+        game.state_check(grid)
       end
     end
+
     context 'when the grid is full' do
+      before do
+        allow(grid).to receive(:full?).and_return(true)
+      end
+
       it 'changes @state to tie' do
-        allow(game.state_check).to_receive(grid.full?).and_return(true)
-        expect(game.state_check).to change(game.state).from('on').to('tie')
+        expect { game.state_check(grid) }.to change(game, :state).from('on').to('tie')
       end
     end
+
     context 'when no win is detected and grid is not full' do
+      before do
+        allow(grid).to receive(:full?).and_return(false)
+        allow(grid).to receive(:win?).and_return(true)
+      end
+
       it 'adds 1 to turn counter and @state remains on' do
-        allow(game.state_check).to_receive(grid.win?).and_return(false)
-        allow(game.state_check).to_receive(grid.full?).and_return(false)
-        expect(game.state_check).to change(mock_turn[:counter]).by(1)
+        expect { game.state_check(grid) }.to change{ game.turn[:counter] }.by(1)
         expect(game.state).to be('on')
-        game.state_check
+        game.state_check(grid)
       end
     end
   end
