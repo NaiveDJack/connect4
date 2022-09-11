@@ -66,11 +66,12 @@ describe Game do
 
     context 'when a win is detected' do
       before do
-        allow(game.state_check(grid)).to receive(grid.win?).and_return(true)
+        allow(grid).to receive(:full?).and_return(false)
+        allow(grid).to receive(:win?).and_return(true)
       end
-
+        
       it 'changes @state to won' do
-        expect(game.state_check(grid)).to change(game.state).from('on').to('won')
+        expect{game.state_check(grid)}.to change{ game.state }.from('on').to('won')
         game.state_check
       end
     end

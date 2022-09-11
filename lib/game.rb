@@ -62,9 +62,9 @@ class Game
 
   # game state checkers
   def state_check(grid = @grid, turn = @turn)
-    if grid.full?
+    if grid.full?(grid)
       @state = 'tie'
-    elsif grid.win?
+    elsif grid.win?(grid)
       @state = 'won'
     else
       turn[:counter] += 1
