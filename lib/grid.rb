@@ -18,7 +18,7 @@ class Grid
 
   # token will be externally restricted to 1, 2 or colored things
   def add_token(column, token)
-    add_token(gets.chomp, token) unless validate_input(column)
+    add_token(gets.chomp.to_i, token) unless validate_input(column)
 
     @tokens[:"c#{column}"][@tokens[:"c#{column}"].key(0)] = token
   end
@@ -29,7 +29,7 @@ class Grid
       return false
     end
 
-    unless @tokens[:"c#{column}"][:r6].zero?
+    unless @tokens[:"c#{column}"][:r6].ord.zero?
       print 'column is full, available columns are'
       check_columns
       return false
@@ -40,8 +40,10 @@ class Grid
 
   def check_columns
     @tokens.each_value.with_index(1) do |column, index|
-      print " #{index}" if column[:r6].zero?
+      print " #{index}" if column[:r6].ord.zero?
     end
+
+    puts
   end
 
   # checking grid state game wise
@@ -51,7 +53,7 @@ class Grid
   end
 
   def full?(grid = @tokens)
-    grid.none? { |_column, row| row[:r6].zero? }
+    grid.none? { |_column, row| row[:r6].ord.zero? }
   end
 
   def same_four?(quad)
