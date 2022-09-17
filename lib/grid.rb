@@ -18,8 +18,12 @@ class Grid
 
   # token will be externally restricted to 1, 2 or colored things
   def add_token(column, token)
-    add_token(gets.chomp.to_i, token) unless validate_input(column)
+    unless validate_input(column)
+      add_token(gets.chomp.to_i, token)
+      return
+    end
 
+    puts column
     @tokens[:"c#{column}"][@tokens[:"c#{column}"].key(0)] = token
   end
 
