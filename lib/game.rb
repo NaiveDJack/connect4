@@ -30,41 +30,43 @@ class Game
   end
 
   def turn_setup
-    @turn = { player: @p1.name, counter: 1 }
+    @turn = { player: @p1, counter: 1 }
   end
 
   # game flow functions
 
   # main game flow
   def game_play
-    turn_play until @state == 'on'
-    declare_winner if @state == 'won'
-    declare_tie if @state == 'tie'
+    turn_play while @state == 'on'
+    puts('game over!', @state)
+    puts("the winner is #{turn[:player].name}") if @state == 'won'
+    puts('the game is tied!') if @state == 'tie'
   end
 
   # single turn flow
   def turn_play(turn = @turn)
     turn_assign(turn, @p1, @p2)
+    @grid.show_grid
     player_input
     @grid.show_grid
     state_check
   end
 
   def turn_assign(turn = @turn, p1 = @p1, p2 = @p2)
-    turn[:player] = turn[:counter].odd? ? p1.name : p2.name
-    puts("it's #{turn[:player]}'s turn.")
+    turn[:player] = turn[:counter].odd? ? p1 : p2
+    puts("it's #{turn[:player].name}'s turn.")
   end
 
   def player_input
     puts('Select the column where you want to put the token.')
-    @grid.add_token(gets.chomp, @turn[:player].token)
+    @grid.add_token(gets.chomp.to_i, @turn[:player].token)
   end
 
   # game state checkers
   def state_check(grid = @grid, turn = @turn)
-    if grid.full?(grid)
+    if grid.full?
       @state = 'tie'
-    elsif grid.win?(grid)
+    elsif grid.win?
       @state = 'won'
     else
       turn[:counter] += 1

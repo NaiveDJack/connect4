@@ -180,7 +180,7 @@ describe Grid do
     context "when grid's columns are all filled" do
       it 'returns true' do
         grid.tokens.each.with_index(1) do |_column, index|
-          6.times { grid.add_token(index, 1) }
+          6.times { grid.add_token(index, '◉') }
         end
         expect(grid.full?).to eq(true)
       end

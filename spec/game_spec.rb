@@ -48,7 +48,7 @@ describe Game do
       let(:mock_turn) { { player: 'none', counter: 1 } }
       it 'sets turn[player] to player 1' do
         game.turn_assign(mock_turn, mock_p1, mock_p2)
-        expect(mock_turn[:player]).to eq('dan')
+        expect(mock_turn[:player].name).to eq('dan')
       end
     end
 
@@ -56,7 +56,7 @@ describe Game do
       let(:mock_turn) { { player: 'none', counter: 2 } }
       it 'sets turn[player] to player 2' do
         game.turn_assign(mock_turn, mock_p1, mock_p2)
-        expect(mock_turn[:player]).to eq('fred')
+        expect(mock_turn[:player].name).to eq('fred')
       end
     end
   end

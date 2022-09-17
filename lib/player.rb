@@ -2,7 +2,7 @@
 
 # creates a player with a name, a position, and a token
 class Player
-  attr_reader :name
+  attr_reader :name, :token
 
   def initialize(number)
     @name = gets.chomp
